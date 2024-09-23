@@ -27,7 +27,6 @@ namespace HoursTracking.View
             Speciality = _speciality;
             DataContext = Speciality;
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;

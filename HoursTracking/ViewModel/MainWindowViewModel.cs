@@ -34,5 +34,17 @@ namespace HoursTracking.ViewModel
                   }));
             }
         }
+        private RelayCommand? groupCommand;
+        public RelayCommand GroupCommand
+        {
+            get
+            {
+                return groupCommand ??
+                  (groupCommand = new RelayCommand((o) =>
+                  {
+                      MainWindow.Instance!.MainFrame.Navigate(new GroupPage());
+                  }));
+            }
+        }
     }
 }

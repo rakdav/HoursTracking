@@ -20,10 +20,6 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="169*"/>
-            <ColumnDefinition Width="131*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />

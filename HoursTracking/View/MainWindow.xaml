@@ -36,7 +36,7 @@
                     Grid.Row="2" Content="Специальности"/>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Height="60" Margin="10 10"
                     ToolTip="Группы"
-                    Grid.Row="3" Content="Группы"/>
+                    Grid.Row="3" Content="Группы" Command="{Binding GroupCommand}"/>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Height="60" Margin="10 10"
                     ToolTip="Преподаватели"
                     Grid.Row="4" Content="Преподаватели"/>
