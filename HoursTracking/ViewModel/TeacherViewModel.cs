@@ -1,5 +1,4 @@
-﻿using BespokeFusion;
-using HoursTracking.Model;
+﻿using HoursTracking.Model;
 using HoursTracking.View;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,26 +13,28 @@ using System.Windows;
 
 namespace HoursTracking.ViewModel
 {
-    internal class GroupViewModel: BaseViewModel
+    internal class TeacherViewModel: BaseViewModel
     {
         private HoursTrackingContext db = new HoursTrackingContext();
-        private Group selectedGroup;
-        public Group SelectedGroup
+        private Teacher selectedTeacher;
+        public Teacher SelectedTeacher
         {
-            get { return selectedGroup; }
+            get { return selectedTeacher; }
             set
             {
-                selectedGroup = value;
-                OnPropertyChanged(nameof(SelectedGroup));
+                selectedTeacher = value;
+                OnPropertyChanged(nameof(SelectedTeacher));
             }
         }
-        public ObservableCollection<Group> GroupsList { get; set; }
-        public GroupViewModel()
+        public ObservableCollection<Teacher> TeachersList { get; set; }
+
+        public TeacherViewModel()
         {
             db.Database.EnsureCreated();
-            db.Groups.OrderBy(p=>p.NameGroup).Load();
-            GroupsList= db.Groups.Local.ToObservableCollection();
+            db.Teachers.OrderBy(p => p.FirstName).Load();
+            TeachersList = db.Teachers.Local.ToObservableCollection();
         }
+
         private RelayCommand? addCommand;
         public RelayCommand AddCommand
         {
@@ -42,18 +43,18 @@ namespace HoursTracking.ViewModel
                 return addCommand ??
                   (addCommand = new RelayCommand((o) =>
                   {
-                      GroupWindow window = new GroupWindow(new Group());
+                      TeacherWindow window = new TeacherWindow(new Teacher());
                       if (window.ShowDialog() == true)
                       {
                           try
                           {
-                              Group spec = window.Group;
-                              db.Groups.Add(spec);
+                              Teacher _teacher = window.ThisTeacher;
+                              db.Teachers.Add(_teacher);
                               db.SaveChanges();
                           }
-                          catch
+                          catch(Exception e)
                           {
-                              MessageBox.Show("Группа с таким названием уже существует");
+                              MessageBox.Show(e.Message);
                           }
                       }
                   }));
@@ -68,29 +69,31 @@ namespace HoursTracking.ViewModel
                   (editCommand = new RelayCommand((selectedItem) =>
                   {
                       //// получаем выделенный объект
-                      Group? user = selectedItem as Group;
+                      Teacher? user = selectedItem as Teacher;
                       if (user == null) return;
 
-                      Group vm = new Group
+                      Teacher vm = new Teacher
                       {
-                          IdGroup=user.IdGroup,
-                          NameGroup = user.NameGroup,
-                          IdSpeciality= user.IdSpeciality
+                          IdTeacher = user.IdTeacher,
+                          FirstName = user.FirstName,
+                          Surname = user.Surname,
+                          LastName=user.LastName
                       };
-                      GroupWindow userWindow = new GroupWindow(vm);
+                      TeacherWindow userWindow = new TeacherWindow(vm);
 
                       if (userWindow.ShowDialog() == true)
                       {
                           try
                           {
-                              user.NameGroup = userWindow.Group.NameGroup;
-                              user.IdSpeciality = userWindow.Group.IdSpeciality;
+                              user.FirstName = userWindow.ThisTeacher.FirstName;
+                              user.Surname = userWindow.ThisTeacher.Surname;
+                              user.LastName = userWindow.ThisTeacher.LastName;
                               db.Entry(user).State = EntityState.Modified;
                               db.SaveChanges();
                           }
-                          catch
+                          catch(Exception e)
                           {
-                              MessageBox.Show("Группа с таким названием уже существует");
+                              MessageBox.Show(e.Message);
                           }
                       }
                   }));
@@ -104,9 +107,9 @@ namespace HoursTracking.ViewModel
                 return deleteCommand ??
                   (deleteCommand = new RelayCommand((selectedItem) =>
                   {
-                      Group? user = selectedItem as Group;
+                      Teacher? user = selectedItem as Teacher;
                       if (user == null) return;
-                      db.Groups.Remove(user);
+                      db.Teachers.Remove(user);
                       db.SaveChanges();
                   }));
             }

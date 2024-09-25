@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace HoursTracking.Model;
 
-public partial class Speciality: INotifyPropertyChanged
+public partial class Speciality: BaseViewModel
 {
     public int IdSpeciality { get; set; }
 
@@ -34,10 +34,5 @@ public partial class Speciality: INotifyPropertyChanged
     }
 
     public virtual ICollection<Group> Groups { get; set; } = new List<Group>();
-    public event PropertyChangedEventHandler? PropertyChanged;
-    public void OnPropertyChanged([CallerMemberName] string prop = "")
-    {
-        if (PropertyChanged != null)
-            PropertyChanged(this, new PropertyChangedEventArgs(prop));
-    }
+    
 }

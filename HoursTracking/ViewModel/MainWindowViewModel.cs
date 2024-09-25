@@ -46,5 +46,43 @@ namespace HoursTracking.ViewModel
                   }));
             }
         }
+
+        private RelayCommand? teacherCommand;
+        public RelayCommand TeacherCommand
+        {
+            get
+            {
+                return teacherCommand ??
+                  (teacherCommand = new RelayCommand((o) =>
+                  {
+                      MainWindow.Instance!.MainFrame.Navigate(new TeacherPage());
+                  }));
+            }
+        }
+
+        private RelayCommand? subjectCommand;
+        public RelayCommand SubjectCommand
+        {
+            get
+            {
+                return subjectCommand ??
+                  (subjectCommand = new RelayCommand((o) =>
+                  {
+                      MainWindow.Instance!.MainFrame.Navigate(new SubjectPage());
+                  }));
+            }
+        }
+        private RelayCommand? planCommand;
+        public RelayCommand PlanCommand
+        {
+            get
+            {
+                return planCommand ??
+                  (planCommand = new RelayCommand((o) =>
+                  {
+                      MainWindow.Instance!.MainFrame.Navigate(new PlanViewPage());
+                  }));
+            }
+        }
     }
 }

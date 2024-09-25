@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace HoursTracking.Model;
 
-public partial class AcademicYear:INotifyPropertyChanged
+public partial class AcademicYear:BaseViewModel
 {
     public int IdAcademicYear { get; set; }
 
@@ -45,11 +45,4 @@ public partial class AcademicYear:INotifyPropertyChanged
     public virtual ICollection<Plan> Plans { get; set; } = new List<Plan>();
 
     public virtual ICollection<Statement> Statements { get; set; } = new List<Statement>();
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-    public void OnPropertyChanged([CallerMemberName] string prop = "")
-    {
-        if (PropertyChanged != null)
-            PropertyChanged(this, new PropertyChangedEventArgs(prop));
-    }
 }

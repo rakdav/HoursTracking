@@ -1,38 +1,35 @@
-﻿using BespokeFusion;
-using HoursTracking.Model;
+﻿using HoursTracking.Model;
 using HoursTracking.View;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace HoursTracking.ViewModel
 {
-    internal class GroupViewModel: BaseViewModel
+    internal class SubjectViewModel:BaseViewModel
     {
         private HoursTrackingContext db = new HoursTrackingContext();
-        private Group selectedGroup;
-        public Group SelectedGroup
+        private Subject selectedSubject;
+        public Subject SelectedSubject
         {
-            get { return selectedGroup; }
+            get { return selectedSubject; }
             set
             {
-                selectedGroup = value;
-                OnPropertyChanged(nameof(SelectedGroup));
+                selectedSubject = value;
+                OnPropertyChanged(nameof(SelectedSubject));
             }
         }
-        public ObservableCollection<Group> GroupsList { get; set; }
-        public GroupViewModel()
+        public ObservableCollection<Subject> SubjectList { get; set; }
+        public SubjectViewModel()
         {
             db.Database.EnsureCreated();
-            db.Groups.OrderBy(p=>p.NameGroup).Load();
-            GroupsList= db.Groups.Local.ToObservableCollection();
+            db.Subjects.OrderBy(p => p.NameSubject).Load();
+            SubjectList = db.Subjects.Local.ToObservableCollection();
         }
         private RelayCommand? addCommand;
         public RelayCommand AddCommand
@@ -42,13 +39,13 @@ namespace HoursTracking.ViewModel
                 return addCommand ??
                   (addCommand = new RelayCommand((o) =>
                   {
-                      GroupWindow window = new GroupWindow(new Group());
+                      SubjectWindow window = new SubjectWindow(new Subject());
                       if (window.ShowDialog() == true)
                       {
                           try
                           {
-                              Group spec = window.Group;
-                              db.Groups.Add(spec);
+                              Subject spec = window.ThisSubject;
+                              db.Subjects.Add(spec);
                               db.SaveChanges();
                           }
                           catch
@@ -68,23 +65,21 @@ namespace HoursTracking.ViewModel
                   (editCommand = new RelayCommand((selectedItem) =>
                   {
                       //// получаем выделенный объект
-                      Group? user = selectedItem as Group;
+                      Subject? user = selectedItem as Subject;
                       if (user == null) return;
 
-                      Group vm = new Group
+                      Subject vm = new Subject
                       {
-                          IdGroup=user.IdGroup,
-                          NameGroup = user.NameGroup,
-                          IdSpeciality= user.IdSpeciality
+                          IdSubject = user.IdSubject,
+                          NameSubject = user.NameSubject
                       };
-                      GroupWindow userWindow = new GroupWindow(vm);
+                      SubjectWindow userWindow = new SubjectWindow(vm);
 
                       if (userWindow.ShowDialog() == true)
                       {
                           try
                           {
-                              user.NameGroup = userWindow.Group.NameGroup;
-                              user.IdSpeciality = userWindow.Group.IdSpeciality;
+                              user.NameSubject = userWindow.ThisSubject.NameSubject;
                               db.Entry(user).State = EntityState.Modified;
                               db.SaveChanges();
                           }
@@ -104,9 +99,9 @@ namespace HoursTracking.ViewModel
                 return deleteCommand ??
                   (deleteCommand = new RelayCommand((selectedItem) =>
                   {
-                      Group? user = selectedItem as Group;
+                      Subject? user = selectedItem as Subject;
                       if (user == null) return;
-                      db.Groups.Remove(user);
+                      db.Subjects.Remove(user);
                       db.SaveChanges();
                   }));
             }

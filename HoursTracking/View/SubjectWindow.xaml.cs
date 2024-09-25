@@ -16,21 +16,19 @@ using System.Windows.Shapes;
 namespace HoursTracking.View
 {
     /// <summary>
-    /// Логика взаимодействия для GroupWindow.xaml
+    /// Логика взаимодействия для SubjectWindow.xaml
     /// </summary>
-    public partial class GroupWindow : Window
+    public partial class SubjectWindow : Window
     {
-        public Group Group { get; private set; }
+        public Subject ThisSubject { get; private set; }
         private HoursTrackingContext db = new HoursTrackingContext();
-        private List<Speciality> SpecialistList { get; set; } = new();
-        public GroupWindow(Group _group)
+        public SubjectWindow(Subject _subject)
         {
             InitializeComponent();
-            Group = _group;
-            DataContext = Group;
-            SpecialistList= db.Specialities.ToList();
-            SpecList.ItemsSource = SpecialistList;
+            ThisSubject = _subject;
+            DataContext = ThisSubject;
         }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;

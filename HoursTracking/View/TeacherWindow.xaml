@@ -1,0 +1,43 @@
+﻿<Window x:Class="HoursTracking.View.TeacherWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HoursTracking.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Преподаватель" Height="200" Width="300">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="8" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="MinWidth" Value="60" />
+            <Setter Property="Margin" Value="8" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBox materialDesign:HintAssist.Hint="Фамилия" x:Name="SurnameText"
+                Text="{Binding Surname}"
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}" Grid.Row="0" Margin="5,5,5,5"/>
+
+        <TextBox materialDesign:HintAssist.Hint="Имя" x:Name="FirstNameText"
+                 Text="{Binding FirstName}"
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" Grid.Row="1" Margin="5,5,5,5"/>
+        <TextBox materialDesign:HintAssist.Hint="Отчество" x:Name="LastNameText"
+                 Text="{Binding LastName}"
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" Grid.Row="2" Margin="5,5,5,5"/>
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="3">
+            <Button IsDefault="True"  Style="{StaticResource MaterialDesignRaisedLightButton}" 
+             Width="100" Margin="10 0" Click="Button_Click">OK</Button>
+            <Button IsCancel="True" Style="{StaticResource MaterialDesignRaisedLightButton}" Width="100" Margin="10 0">Отмена</Button>
+        </StackPanel>
+    </Grid>
+</Window>

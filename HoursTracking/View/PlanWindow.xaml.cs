@@ -16,21 +16,15 @@ using System.Windows.Shapes;
 namespace HoursTracking.View
 {
     /// <summary>
-    /// Логика взаимодействия для GroupWindow.xaml
+    /// Логика взаимодействия для PlanWindow.xaml
     /// </summary>
-    public partial class GroupWindow : Window
+    public partial class PlanWindow : Window
     {
-        public Group Group { get; private set; }
-        private HoursTrackingContext db = new HoursTrackingContext();
-        private List<Speciality> SpecialistList { get; set; } = new();
-        public GroupWindow(Group _group)
+        public PlanWindow(Plan _plan)
         {
             InitializeComponent();
-            Group = _group;
-            DataContext = Group;
-            SpecialistList= db.Specialities.ToList();
-            SpecList.ItemsSource = SpecialistList;
         }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;

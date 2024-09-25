@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HoursTracking.ViewModel
 {
-    internal class SpecialityViewModel : INotifyPropertyChanged
+    internal class SpecialityViewModel : BaseViewModel
     {
         private HoursTrackingContext db = new HoursTrackingContext();
         private Speciality selectedSpeciality;
@@ -93,12 +93,6 @@ namespace HoursTracking.ViewModel
                       db.SaveChanges();
                   }));
             }
-        }
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

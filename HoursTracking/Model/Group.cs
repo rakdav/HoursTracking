@@ -1,15 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace HoursTracking.Model;
 
-public partial class Group
+public partial class Group: BaseViewModel
 {
     public int IdGroup { get; set; }
 
-    public string NameGroup { get; set; } = null!;
-
-    public int IdSpeciality { get; set; }
+    private string? nameGroup;
+    public string? NameGroup 
+    {
+        get { return nameGroup; }
+        set
+        {
+            nameGroup = value;
+            OnPropertyChanged(nameof(NameGroup));
+        }
+    }
+    private int idSpeciality;
+    public int IdSpeciality 
+    {
+        get { return idSpeciality; }
+        set
+        {
+            idSpeciality = value;
+            OnPropertyChanged(nameof(IdSpeciality));
+        }
+    }
 
     public virtual ICollection<Certification> Certifications { get; set; } = new List<Certification>();
 

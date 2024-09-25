@@ -28,12 +28,14 @@
         <TextBox materialDesign:HintAssist.Hint="Название группы" x:Name="GroupNameText"
           Text="{Binding NameGroup}"
           Style="{StaticResource MaterialDesignFloatingHintTextBox}" Grid.Row="0" Margin="5,5,5,5"/>
-        <ComboBox materialDesign:HintAssist.Hint="Выберите специальность" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+        <ComboBox materialDesign:HintAssist.Hint="Выберите специальность" Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                  ItemsSource="{Binding SpecialistList}"
                   Grid.Row="1" Margin="5,5,5,5" DisplayMemberPath="NameSpeciality"
-                  SelectedValuePath="IdSpeciality" x:Name="SpecList"/>
+                  SelectedValuePath="IdSpeciality" x:Name="SpecList" SelectedValue="{Binding IdSpeciality}"/>
 
         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2" Margin="30,44,0,0" Grid.RowSpan="2">
-            <Button IsDefault="True"  Style="{StaticResource MaterialDesignRaisedLightButton}" Width="100" Margin="10 0" Click="Button_Click">OK</Button>
+            <Button IsDefault="True"  Style="{StaticResource MaterialDesignRaisedLightButton}" 
+                    Width="100" Margin="10 0" Click="Button_Click">OK</Button>
             <Button IsCancel="True" Style="{StaticResource MaterialDesignRaisedLightButton}" Width="100" Margin="10 0">Отмена</Button>
         </StackPanel>
     </Grid>

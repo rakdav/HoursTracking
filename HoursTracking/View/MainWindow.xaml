@@ -38,13 +38,13 @@
                     ToolTip="Группы"
                     Grid.Row="3" Content="Группы" Command="{Binding GroupCommand}"/>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Height="60" Margin="10 10"
-                    ToolTip="Преподаватели"
+                    ToolTip="Преподаватели" Command="{Binding TeacherCommand}"
                     Grid.Row="4" Content="Преподаватели"/>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Height="60" Margin="10 10"
-                    ToolTip="Предметы"
+                    ToolTip="Предметы" Command="{Binding SubjectCommand}"
                     Grid.Row="5" Content="Предметы"/>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Height="60" Margin="10 10"
-                    ToolTip="Планы"
+                    ToolTip="Планы" Command="{Binding PlanCommand}"
                     Grid.Row="6" Content="Планы"/>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Height="60" Margin="10 10"
                     ToolTip="Учебные года" Command="{Binding AcademicYearCommand}"

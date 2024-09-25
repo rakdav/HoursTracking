@@ -1,4 +1,4 @@
-﻿<Page x:Class="HoursTracking.View.SpecialityPage"
+﻿<Page x:Class="HoursTracking.View.TeacherPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,29 +7,32 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Специальность">
+      Title="TeacherPage">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="180*"/>
             <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" x:Name="SpecialityList" ItemsSource="{Binding Specialities}">
+        <ListBox Grid.Column="0" x:Name="TeacherListBox" ItemsSource="{Binding TeachersList}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <materialDesign:Card
-                        Background="{DynamicResource PrimaryHueDarkBrush}"
-                        Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                        Padding="8"
-                        Width="900"
-                        Margin="10 10"
-                        UniformCornerRadius="6">
-                        <StackPanel>
+                   Background="{DynamicResource PrimaryHueDarkBrush}"
+                   Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                   Padding="8"
+                   Width="900"
+                   Margin="10 10"
+                   UniformCornerRadius="6">
+                        <StackPanel Orientation="Horizontal">
                             <StackPanel.InputBindings>
                                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" 
-                                    CommandParameter="{Binding ElementName=SpecialityList, Path=SelectedItem}"/>
+                                              CommandParameter="{Binding ElementName=TeacherListBox, Path=SelectedItem}"/>
                             </StackPanel.InputBindings>
-                            <TextBlock Text="{Binding NameSpeciality}" FontSize="30" />
-                            <TextBlock Text="{Binding SpecialityCode}" FontSize="30" />
+                            <TextBlock Text="{Binding Path=Surname}" FontSize="30" />
+                            <TextBlock Text=" "/>
+                            <TextBlock Text="{Binding Path=FirstName}" FontSize="30" />
+                            <TextBlock Text=" "/>
+                            <TextBlock Text="{Binding Path=LastName}" FontSize="30" />
                         </StackPanel>
                     </materialDesign:Card>
                 </DataTemplate>
@@ -42,25 +45,25 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Button Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Добавить" Command="{Binding AddCommand}" 
-            Width="100" Height="100">
+                            Width="100" Height="100">
                 <materialDesign:PackIcon
                     Kind="CirclesAdd"
                     Height="30"
                     Width="30" />
             </Button>
             <Button Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Редактировать" Command="{Binding EditCommand}" 
-            Width="100" Height="100" Grid.Row="1" CommandParameter="{Binding ElementName=SpecialityList, Path=SelectedItem}">
+                    Width="100" Height="100" Grid.Row="1" CommandParameter="{Binding ElementName=TeacherListBox, Path=SelectedItem}">
                 <materialDesign:PackIcon
                     Kind="Edit"
                     Height="30"
                     Width="30" />
             </Button>
             <Button Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Удалить" Command="{Binding DeleteCommand}" 
-     Width="100" Height="100" Grid.Row="2" CommandParameter="{Binding ElementName=SpecialityList, Path=SelectedItem}">
+                    Width="100" Height="100" Grid.Row="2" CommandParameter="{Binding ElementName=TeacherListBox, Path=SelectedItem}">
                 <materialDesign:PackIcon
                     Kind="DeleteForever"
                     Height="30"
-                    Width="30" />
+                    Width="30" />   
             </Button>
         </Grid>
     </Grid>

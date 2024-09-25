@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace HoursTracking.ViewModel
 {
-    internal class AcademicYearViewModel: INotifyPropertyChanged
+    internal class AcademicYearViewModel: BaseViewModel
     {
         private HoursTrackingContext db = new HoursTrackingContext();
         private AcademicYear selectedAcademicYear;
@@ -98,12 +98,6 @@ namespace HoursTracking.ViewModel
                       db.SaveChanges();
                   }));
             }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

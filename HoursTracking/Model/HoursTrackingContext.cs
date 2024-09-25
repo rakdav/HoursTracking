@@ -86,6 +86,7 @@ public partial class HoursTrackingContext : DbContext
                 .HasForeignKey(d => d.IdSpeciality)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Group_Speciality");
+            entity.HasAlternateKey(u => new { u.NameGroup });
         });
 
         modelBuilder.Entity<Plan>(entity =>
@@ -110,6 +111,11 @@ public partial class HoursTrackingContext : DbContext
                 .HasForeignKey(d => d.IdSubject)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Plan_Subject");
+
+            entity.HasOne(d => d.IdTeacherNavigation).WithMany(p => p.Plans)
+                .HasForeignKey(d => d.IdTeacher)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Plan_Teacher_IdTeacher");
         });
 
         modelBuilder.Entity<Speciality>(entity =>

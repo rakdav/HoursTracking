@@ -1,19 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace HoursTracking.Model;
 
-public partial class Teacher
+public partial class Teacher: BaseViewModel
 {
     public int IdTeacher { get; set; }
 
-    public string? Surname { get; set; }
+    private string? surname;
+    public string? Surname
+    {
+        get { return surname; }
+        set
+        {
+            surname = value;
+            OnPropertyChanged(nameof(Surname));
+        }
+    }
 
-    public string? FirstName { get; set; }
+    private string? firstName;
+    public string? FirstName 
+    {
+        get { return firstName; }
+        set
+        {
+            firstName = value;
+            OnPropertyChanged(nameof(FirstName));
+        }
+    }
 
-    public string LastName { get; set; } = null!;
+    private string? lastName;
+    public string? LastName 
+    {
+        get { return lastName; }
+        set
+        {
+            lastName = value;
+            OnPropertyChanged(nameof(LastName));
+        }
+    }
 
     public virtual ICollection<Certification> Certifications { get; set; } = new List<Certification>();
 
     public virtual ICollection<Statement> Statements { get; set; } = new List<Statement>();
+    public virtual ICollection<Plan> Plans { get; set; } = new List<Plan>();
 }
