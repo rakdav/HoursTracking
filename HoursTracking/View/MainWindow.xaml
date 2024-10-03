@@ -27,9 +27,9 @@
 
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Height="60"
                     ToolTip="Учет времени преподавателей" Margin="10 10"
-                    Grid.Row="0" Content="Главная"/>
+                    Grid.Row="0" Content="Главная" Command="{Binding MainCommand}"/>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Height="60" Margin="10 10"
-                    ToolTip="Промежуточная аттестация"
+                    ToolTip="Промежуточная аттестация" Command="{Binding AtestationCommand}"
                     Grid.Row="1" Content="Аттестация"/>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Height="60" Margin="10 10"
                     ToolTip="Специальности" Command="{Binding SpecialityCommand}"

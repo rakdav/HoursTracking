@@ -1,5 +1,4 @@
-﻿using HoursTracking.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,20 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using HoursTracking.ViewModel;
 
 namespace HoursTracking.View
 {
     /// <summary>
-    /// Логика взаимодействия для PlanViewPage.xaml
+    /// Логика взаимодействия для AtestationPage.xaml
     /// </summary>
-    public partial class PlanViewPage : Page
+    public partial class AtestationPage : Page
     {
-        public static PlanViewPage? Instance { get; private set; }
-        public PlanViewPage()
+        public AtestationPage()
         {
             InitializeComponent();
-            Instance = this;
-            DataContext = new PlanViewModel();
+            DataContext = new AtestationViewModel();        
         }
     }
 }

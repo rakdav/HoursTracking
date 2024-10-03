@@ -20,11 +20,24 @@ namespace HoursTracking.View
     /// </summary>
     public partial class PlanWindow : Window
     {
+        private HoursTrackingContext db = new HoursTrackingContext();
+        public Plan ThisPlan { get; private set; }
+        //public List<Speciality> SpecialistList { get; set; } = new();
+        //public List<Group> GroupList { get; set; } = new();
+        //public List<Teacher> TeacherList { get; set; } = new();
         public PlanWindow(Plan _plan)
         {
             InitializeComponent();
+            ThisPlan = _plan;
+            DataContext = ThisPlan;
+            SpecList.ItemsSource = db.Specialities.ToList();
+            if(_plan.IdGroup!=0)
+                SpecList.SelectedValue = db.Groups.FirstOrDefault(p => p.IdGroup == _plan.IdGroup)!.IdSpeciality;
+            GroupsComboBox.ItemsSource = db.Groups.ToList();
+            TeachersComboBox.ItemsSource = db.Teachers.ToList();
+            ОbjectComboBox.ItemsSource = db.Subjects.ToList();
+            YearComboBox.ItemsSource = db.AcademicYears.ToList();
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;

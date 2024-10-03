@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace HoursTracking.ViewModel
 {
-    internal class RelayCommand : ICommand
+    public class RelayCommand : ICommand
     {
         Action<object?> execute;
         Func<object?, bool>? canExecute;

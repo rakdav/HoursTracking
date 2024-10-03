@@ -10,6 +10,34 @@ namespace HoursTracking.ViewModel
 {
     internal class MainWindowViewModel
     {
+        public MainWindowViewModel()
+        {
+            MainWindow.Instance!.MainFrame.Navigate(new CertificationPage());
+        }
+        private RelayCommand? mainCommand;
+        public RelayCommand MainCommand
+        {
+            get
+            {
+                return mainCommand ??
+                  (mainCommand = new RelayCommand((o) =>
+                  {
+                      MainWindow.Instance!.MainFrame.Navigate(new CertificationPage());
+                  }));
+            }
+        }
+        private RelayCommand? atestationCommand;
+        public RelayCommand AtestationCommand
+        {
+            get
+            {
+                return atestationCommand ??
+                  (atestationCommand = new RelayCommand((o) =>
+                  {
+                      MainWindow.Instance!.MainFrame.Navigate(new AtestationPage());
+                  }));
+            }
+        }
         private RelayCommand? academicYearCommand;
         public RelayCommand AcademicYearCommand
         {
@@ -73,6 +101,7 @@ namespace HoursTracking.ViewModel
             }
         }
         private RelayCommand? planCommand;
+
         public RelayCommand PlanCommand
         {
             get

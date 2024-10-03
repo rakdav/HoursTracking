@@ -41,7 +41,16 @@ public partial class Teacher: BaseViewModel
             OnPropertyChanged(nameof(LastName));
         }
     }
-
+    private string? fullName;
+    public string? FullName
+    {
+        get { return fullName; }
+        set
+        {
+            fullName = value;
+            OnPropertyChanged(nameof(FullName));
+        }
+    }
     public virtual ICollection<Certification> Certifications { get; set; } = new List<Certification>();
 
     public virtual ICollection<Statement> Statements { get; set; } = new List<Statement>();

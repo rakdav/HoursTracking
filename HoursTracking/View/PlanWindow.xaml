@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HoursTracking.View"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Планы" Height="600" Width="600">
+        Title="Планы" Height="400" Width="400">
     <Window.Resources>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="8" />
@@ -21,33 +21,63 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
+            <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ComboBox materialDesign:HintAssist.Hint="Выберите специальность" Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
-                  ItemsSource="{Binding SpecialistList}" FontSize="16"
-                  Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" DisplayMemberPath="NameSpeciality"
-                  SelectedValuePath="IdSpeciality" x:Name="SpecList" SelectedValue="{Binding IdSpeciality}"/>
-        <ComboBox materialDesign:HintAssist.Hint="Выберите семестр" Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
-                    ItemsSource="{Binding SpecialistList}" FontSize="16"
-                    Grid.Row="0" Grid.Column="1" Margin="5,5,5,5">
-            <TextBlock>Осень</TextBlock>
-            <TextBlock>Зима</TextBlock>
+            <ComboBox materialDesign:HintAssist.Hint="Выберите специальность" 
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}" FontSize="14"
+                      Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" 
+                      DisplayMemberPath="NameSpeciality"
+                      SelectedValuePath="IdSpeciality" x:Name="SpecList" IsEditable="True"/>
+        <ComboBox materialDesign:HintAssist.Hint="Выберите семестр" 
+                      Text="{Binding Semestr}"
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                      FontSize="14" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5">
+                <TextBlock>Осень</TextBlock>
+                <TextBlock>Зима</TextBlock>
         </ComboBox>
+            <ComboBox materialDesign:HintAssist.Hint="Выберите группу" 
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                      ItemsSource="{Binding IdGroup}" FontSize="14" DisplayMemberPath="NameGroup"
+                      Grid.Row="2" Grid.Column="0" Margin="5,5,5,5"  IsEditable="True"
+                      SelectedValuePath="IdGroup"
+                      SelectedValue="{Binding IdGroup}" x:Name="GroupsComboBox"/>
+        <ComboBox materialDesign:HintAssist.Hint="Выберите учителя" IsEditable="True"
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                      FontSize="14" SelectedValue="{Binding IdTeacher}"
+                      Grid.Row="2" Grid.Column="1" Margin="5,5,5,5"
+                      SelectedValuePath="IdTeacher"
+                      x:Name="TeachersComboBox" DisplayMemberPath="FullName"/>
+
         <TextBox materialDesign:HintAssist.Hint="Обязательная нагрузка"
-            Text="{Binding NecessarilyWork}"
-            Style="{StaticResource MaterialDesignFloatingHintTextBox}" Grid.Row="1" Margin="5 30" FontSize="16"/>
-        <TextBox materialDesign:HintAssist.Hint="Самостоятельная работа"
-            Text="{Binding NecessarilyWork}" FontSize="16"
-            Style="{StaticResource MaterialDesignFloatingHintTextBox}" Grid.Row="1" Grid.Column="1" Margin="5 30" />
+                     Text="{Binding NecessarilyWork}"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                     Grid.Row="1" Margin="5 10" FontSize="14"/>
+            <TextBox materialDesign:HintAssist.Hint="Самостоятельная работа"
+                     Text="{Binding IndependentWork}" FontSize="14"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                     Grid.Row="1" Grid.Column="1" Margin="5 10" />
+        <ComboBox materialDesign:HintAssist.Hint="Выберите предмет" IsEditable="True"
+               Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+               FontSize="14" SelectedValue="{Binding IdSubject}"
+               Grid.Row="3" Grid.Column="0" Margin="15,5,15,5"
+               SelectedValuePath="IdSubject"
+               x:Name="ОbjectComboBox" DisplayMemberPath="NameSubject"/>
+        <ComboBox materialDesign:HintAssist.Hint="Выберите учебный год" IsEditable="True"
+            Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+            FontSize="14" SelectedValue="{Binding IdAcademicYear}"
+            Grid.Row="3" Grid.Column="1" Margin="15,5,15,5"
+            SelectedValuePath="IdAcademicYear"
+            x:Name="YearComboBox" DisplayMemberPath="NameYear"/>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2">
-            <Button IsDefault="True"  Style="{StaticResource MaterialDesignRaisedLightButton}" 
-            Width="150" Margin="10 0" Click="Button_Click">OK</Button>
-            <Button IsCancel="True" Style="{StaticResource MaterialDesignRaisedLightButton}" Width="150" Margin="10 0">Отмена</Button>
-        </StackPanel>
+                <Button IsDefault="True"  Style="{StaticResource MaterialDesignRaisedLightButton}" 
+                    Width="150" Margin="10 0" Click="Button_Click">OK</Button>
+                <Button IsCancel="True" Style="{StaticResource MaterialDesignRaisedLightButton}" Width="150" Margin="10 0">Отмена</Button>
+            </StackPanel>
     </Grid>
+    
 </Window>

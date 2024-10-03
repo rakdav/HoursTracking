@@ -5,48 +5,101 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:HoursTracking.View"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:converter="clr-namespace:HoursTracking.Converters"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      Background="{DynamicResource MaterialDesignPaper}"
+      FontFamily="{DynamicResource MaterialDesignFont}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Планы">
+    <Page.Resources>
+        <converter:ToNameYearConverter x:Key="myNameYearConverter" />
+        <converter:ToNameSubjectConverter x:Key="nameSubjectConverter"/>
+        <converter:ToGroupNameConverter x:Key="nameGroupConverter"/>
+    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="180*"/>
             <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" x:Name="PlanListBox" ItemsSource="{Binding PlanList}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <materialDesign:Card
-                       Background="{DynamicResource PrimaryHueDarkBrush}"
-                       Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                       Padding="8"
-                       Width="900"
-                       Margin="10 10"
-                       UniformCornerRadius="6"> 
-                        <StackPanel>
-                            <StackPanel.InputBindings>
-                                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" 
-                                        CommandParameter="{Binding ElementName=PlanListBox, Path=SelectedItem}"/>
-                            </StackPanel.InputBindings>
-                            <TextBlock Text="{Binding idAcademicYear}" FontSize="30" />
-                            <TextBlock Text="{Binding Semestr}" FontSize="30" />
-                            <TextBlock Text="{Binding NecessarilyWork}" FontSize="30" />
-                            <TextBlock Text="{Binding IndependentWork}" FontSize="30" />
-                            <TextBlock Text="{Binding IdGroup}" FontSize="30" />
-                            <TextBlock Text="{Binding IdSubject}" FontSize="30" />
-                            <TextBlock Text="{Binding IdTeacher}" FontSize="30" />
-                        </StackPanel>
-                    </materialDesign:Card>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="100*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Background="#03a9f4">
+                <ComboBox Name="UchYearList" ItemsSource="{Binding AcademicYearList}"
+                          materialDesign:HintAssist.Hint="Выберите учебный год"
+                          FontSize="14" SelectedValue="{Binding IdAcademicYear}"
+                          SelectedItem="{Binding SelectedAcademicYear}"
+                          DisplayMemberPath="NameYear" SelectedValuePath="IdAcademicYear">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding RegionChangedCmd}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+            </StackPanel>
+            <ListBox Grid.Row="1" x:Name="PlanListBox" ItemsSource="{Binding PlanList}"
+                     SelectedItem="{Binding SelectedPlan}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card Background="#03a9f4"
+                            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                            Padding="0" Width="950">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="30*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="16 16 16 4"
+                                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                    Text="{Binding IdSubject,
+                                    Converter={StaticResource nameSubjectConverter}}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Margin="16 16 16 4"
+                                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                    Text="{Binding IdGroup,
+                                    Converter={StaticResource nameGroupConverter}}"/>
+                                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" 
+                                            Margin="16 0 16 8"
+                                            HorizontalAlignment="Right">
+                                    <Button
+                                         HorizontalAlignment="Right"
+                                         Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                         Width="30" Padding="2 0 2 0"
+                                         Command="{Binding EditCommand}"
+                                         CommandParameter="{Binding ElementName=PlanListBox, Path=SelectedItem}"
+                                         materialDesign:RippleAssist.IsCentered="True">  
+                                        <materialDesign:PackIcon Kind="Edit" />
+                                    </Button>
+                                    <Button
+                                         HorizontalAlignment="Right"
+                                         Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                         Width="30" Padding="2 0 2 0"
+                                         Command="{Binding DeleteCommand}"
+                                         CommandParameter="{Binding ElementName=PlanListBox, Path=SelectedItem}"
+                                         materialDesign:RippleAssist.IsCentered="True">
+                                        <materialDesign:PackIcon Kind="DeleteForever" />
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
         </ListBox>
+        </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Добавить" Command="{Binding AddCommand}" 
+            <Button Style="{StaticResource MaterialDesignFloatingActionButton}" 
+                    ToolTip="Добавить" Command="{Binding AddCommand}" 
                     Width="100" Height="100">
                 <materialDesign:PackIcon
                    Kind="CirclesAdd"

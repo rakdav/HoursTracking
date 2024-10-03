@@ -5,12 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HoursTracking.ViewModel
 {
-    internal class PlanViewModel:BaseViewModel
+    public class PlanViewModel:BaseViewModel
     {
         private HoursTrackingContext db = new HoursTrackingContext();
         private Plan selectedPlan;
@@ -23,12 +25,24 @@ namespace HoursTracking.ViewModel
                 OnPropertyChanged(nameof(SelectedPlan));
             }
         }
-        public ObservableCollection<Plan> PlanList { get; set; }
+        private AcademicYear selectedAcademicYear;
+        public AcademicYear SelectedAcademicYear
+        {
+            get { return selectedAcademicYear; }
+            set
+            {
+                selectedAcademicYear = value;
+                OnPropertyChanged(nameof(SelectedAcademicYear));
+            }
+        }
+        public ObservableCollection<Plan> PlanList { get; set; } = new();
+        public List<AcademicYear> AcademicYearList { get; set; }
         public PlanViewModel()
         {
             db.Database.EnsureCreated();
-            db.Plans.Load();
-            PlanList = db.Plans.Local.ToObservableCollection();
+            AcademicYearList = db.AcademicYears.OrderBy(p=>p.NameYear).ToList();
+            SelectedAcademicYear = AcademicYearList[AcademicYearList.Count-1];
+            UpdateList();
         }
 
         private RelayCommand? addCommand;
@@ -42,16 +56,17 @@ namespace HoursTracking.ViewModel
                       PlanWindow window = new PlanWindow(new Plan());
                       if (window.ShowDialog() == true)
                       {
-                      //    try
-                      //    {
-                      //        Group spec = window.Group;
-                      //        db.Groups.Add(spec);
-                      //        db.SaveChanges();
-                      //    }
-                      //    catch
-                      //    {
-                      //        MessageBox.Show("Группа с таким названием уже существует");
-                      //    }
+                          try
+                          {
+                              Plan spec = window.ThisPlan;
+                              db.Plans.Add(spec);
+                              db.SaveChanges();
+                              UpdateList();
+                          }
+                          catch(Exception e)
+                          {
+                              MessageBox.Show(e.Message);
+                          }
                       }
                   }));
             }
@@ -65,31 +80,42 @@ namespace HoursTracking.ViewModel
                   (editCommand = new RelayCommand((selectedItem) =>
                   {
                       // получаем выделенный объект
-                      //Group? user = selectedItem as Group;
-                      //if (user == null) return;
+                      Plan? user = selectedItem as Plan;
+                      if (user == null) return;
 
-                      //Group vm = new Group
-                      //{
-                      //    IdGroup = user.IdGroup,
-                      //    NameGroup = user.NameGroup,
-                      //    IdSpeciality = user.IdSpeciality
-                      //};
-                      //GroupWindow userWindow = new GroupWindow(vm);
+                      Plan vm = new Plan
+                      {
+                          IdPlan = user.IdPlan,
+                          IdAcademicYear = user.IdAcademicYear,
+                          IdGroup = user.IdGroup,
+                          IdTeacher=user.IdTeacher,
+                          IdSubject=user.IdSubject,
+                          Semestr=user.Semestr,
+                          IndependentWork=user.IndependentWork,
+                          NecessarilyWork=user.NecessarilyWork
+                      };
+                      PlanWindow userWindow = new PlanWindow(vm);
 
-                      //if (userWindow.ShowDialog() == true)
-                      //{
-                      //    try
-                      //    {
-                      //        user.NameGroup = userWindow.Group.NameGroup;
-                      //        user.IdSpeciality = userWindow.Group.IdSpeciality;
-                      //        db.Entry(user).State = EntityState.Modified;
-                      //        db.SaveChanges();
-                      //    }
-                      //    catch
-                      //    {
-                      //        MessageBox.Show("Группа с таким названием уже существует");
-                      //    }
-                      //}
+                      if (userWindow.ShowDialog() == true)
+                      {
+                          try
+                          {
+                              user.IdAcademicYear = userWindow.ThisPlan.IdAcademicYear;
+                              user.IdGroup = userWindow.ThisPlan.IdGroup;
+                              user.IdSubject = userWindow.ThisPlan.IdSubject;
+                              user.IdAcademicYear = userWindow.ThisPlan.IdAcademicYear;
+                              user.Semestr = userWindow.ThisPlan.Semestr;
+                              user.NecessarilyWork = userWindow.ThisPlan.NecessarilyWork;
+                              user.IndependentWork = userWindow.ThisPlan.IndependentWork;
+                              db.Entry(user).State = EntityState.Modified;
+                              db.SaveChanges();
+                              UpdateList();
+                          }
+                          catch
+                          {
+                              MessageBox.Show("Группа с таким названием уже существует");
+                          }
+                      }
                   }));
             }
         }
@@ -101,12 +127,31 @@ namespace HoursTracking.ViewModel
                 return deleteCommand ??
                   (deleteCommand = new RelayCommand((selectedItem) =>
                   {
-                      //Group? user = selectedItem as Group;
-                      //if (user == null) return;
-                      //db.Groups.Remove(user);
-                      //db.SaveChanges();
+                      Plan? user = selectedItem as Plan;
+                      if (user == null) return;
+                      db.Plans.Remove(user);
+                      db.SaveChanges();
+                      UpdateList();
                   }));
             }
+        }
+        private RelayCommand? regionChangedCmd;
+        public RelayCommand RegionChangedCmd
+        {
+            get
+            {
+                return regionChangedCmd ??
+                  (regionChangedCmd = new RelayCommand((o) =>
+                  {
+                      UpdateList();
+                  }));
+            }
+        }
+        private void UpdateList()
+        {
+            var list = db.Plans.Where(p => p.IdAcademicYear == selectedAcademicYear.IdAcademicYear).ToList();
+            ObservableCollection<Plan> obsList = new ObservableCollection<Plan>(list);
+            PlanViewPage.Instance!.PlanListBox.ItemsSource = obsList;
         }
     }
 }
