@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace HoursTracking.ViewModel
 {
@@ -24,12 +25,88 @@ namespace HoursTracking.ViewModel
                 OnPropertyChanged(nameof(SelectedCertification));
             }
         }
+        public string fieldFilter;
+        public string FieldFilter
+        {
+            get { return fieldFilter; }
+            set
+            {
+                fieldFilter = value;
+                OnPropertyChanged(nameof(FieldFilter));
+            }
+        }
         public ObservableCollection<Certification> AtestationList { get; set; } = new();
         public AtestationViewModel()
         {
             db.Database.EnsureCreated();
             db.Certifications.Load();
             AtestationList = db.Certifications.Local.ToObservableCollection();
+        }
+
+        private RelayCommand? fieldChanged;
+        public RelayCommand FieldChanged
+        {
+            get
+            {
+                return fieldChanged ??
+                  (fieldChanged = new RelayCommand((o) =>
+                  {
+                      switch (fieldFilter)
+                      {
+                          case "Преподаватель":
+                              try
+                              {
+                                  string text = (o as TextBox).Text;
+                                  if (db.Teachers.FirstOrDefault(p => p.FullName!.StartsWith(text)) != null&&text.Length!=0)
+                                  {
+                                      int idTeacher = db.Teachers.FirstOrDefault(p => p.FullName!.StartsWith(text))!.IdTeacher;
+                                      List<Certification> list = db.Certifications.Where(p => p.IdTeacher == idTeacher).OrderBy(p=>p.DateCertification).ToList();
+                                      if (list != null)
+                                      {
+                                          AtestationPage.Instance.AtestationListBox.ItemsSource = null;
+                                          AtestationPage.Instance.AtestationListBox.ItemsSource = list;
+                                      }
+                                  }
+                                  else
+                                  {
+                                      AtestationPage.Instance.AtestationListBox.ItemsSource = null;
+                                      AtestationPage.Instance.AtestationListBox.ItemsSource = db.Certifications.ToList();
+                                  }
+                              }
+                              catch(Exception e) 
+                              {
+                                  
+                              }
+                              break;
+                          case "Предмет":
+                              try
+                              {
+                                  string text = (o as TextBox).Text;
+                                  if (db.Subjects.FirstOrDefault(p => p.NameSubject!.StartsWith(text)) != null && text.Length != 0)
+                                  {
+                                      int idSubject = db.Subjects.FirstOrDefault(p => p.NameSubject!.StartsWith(text))!.IdSubject;
+                                      List<Certification> list = db.Certifications.Where(p => p.IdSubject == idSubject).OrderBy(p => p.DateCertification).ToList();
+                                      if (list != null)
+                                      {
+                                          AtestationPage.Instance.AtestationListBox.ItemsSource = null;
+                                          AtestationPage.Instance.AtestationListBox.ItemsSource = list;
+                                      }
+                                  }
+                                  else
+                                  {
+                                      AtestationPage.Instance.AtestationListBox.ItemsSource = null;
+                                      AtestationPage.Instance.AtestationListBox.ItemsSource = db.Certifications.ToList();
+                                  }
+                              }
+                              catch (Exception e)
+                              {
+
+                              }
+                              break;
+                      }
+                   
+                  }));
+            }
         }
         private RelayCommand? addCommand;
         public RelayCommand AddCommand

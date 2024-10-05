@@ -21,9 +21,11 @@ namespace HoursTracking.View
     /// </summary>
     public partial class AtestationPage : Page
     {
+        public static AtestationPage Instance { get; private set;}
         public AtestationPage()
         {
             InitializeComponent();
+            Instance = this;
             DataContext = new AtestationViewModel();        
         }
     }

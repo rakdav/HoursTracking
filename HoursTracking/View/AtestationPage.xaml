@@ -4,17 +4,51 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:HoursTracking.View"
-       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:converter="clr-namespace:HoursTracking.Converters"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Background="{DynamicResource MaterialDesignPaper}"
+      FontFamily="{DynamicResource MaterialDesignFont}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AtestationPage">
-
+    <Page.Resources>
+        <converter:ToNameTeacherConverter x:Key="toNameTeacher"/>
+        <converter:ToNameSubjectConverter x:Key="toNameSubject"/>
+        <converter:DateTimeToDateConverter x:Key="toDate"/>
+    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="180*"/>
             <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" x:Name="AtestationListBox" ItemsSource="{Binding AtestationList}">
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="100*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <ComboBox Name="FieldFilterComboBox" materialDesign:HintAssist.Hint="Выберите поле"
+                          Margin="20 0 20 0" Text="{Binding FieldFilter}">
+                    <TextBlock>Преподаватель</TextBlock>
+                    <TextBlock>Предмет</TextBlock>
+                    <TextBlock>Вид аттестации</TextBlock>
+                    <TextBlock>Группа</TextBlock>
+                </ComboBox>
+                <TextBox x:Name="FilterTextBox" Width="200" materialDesign:HintAssist.Hint="Текст для поиска"
+                        materialDesign:TextFieldAssist.TextBoxViewMargin="1 0 1 0"
+                        materialDesign:HintAssist.FloatingScale="0.50"
+                        Margin="10 0"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        FontSize="16">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="TextChanged">
+                            <i:InvokeCommandAction Command="{Binding FieldChanged}" CommandParameter="{Binding ElementName=FilterTextBox}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBox>
+            </StackPanel>
+            <ListBox Grid.Row="1" x:Name="AtestationListBox" ItemsSource="{Binding AtestationList}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <materialDesign:Card
@@ -29,14 +63,15 @@
                                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" 
                                  CommandParameter="{Binding ElementName=AtestationListBox, Path=SelectedItem}"/>
                             </StackPanel.InputBindings>
-                            <TextBlock Text="{Binding IdTeacher}" FontSize="30" />
-                            <TextBlock Text="{Binding DateCertification}" FontSize="30" />
-                            <TextBlock Text="{Binding IdSubject}" FontSize="30" />
+                            <TextBlock Text="{Binding IdTeacher,Converter={StaticResource toNameTeacher}}" FontSize="30" />
+                            <TextBlock Text="{Binding DateCertification,Converter={StaticResource toDate}}" FontSize="30" />
+                            <TextBlock Text="{Binding IdSubject,Converter={StaticResource toNameSubject}}" FontSize="30" />
                         </StackPanel>
                     </materialDesign:Card>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
